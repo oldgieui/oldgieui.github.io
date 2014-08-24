@@ -1,0 +1,117 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="Style.css">
+        <title>Doughnut Hunter</title>
+    </head>
+    <body>
+        <div id="title"> <p>DOUGHNUT<br>HUNTER</p><br><br>CLICK TO START</div>
+        <div id="map">
+            
+            <div>
+                <audio src="./LFL.mp3" autoplay="true" loop="true" controls></audio>
+            </div>
+            <div id="textBox"> !!! </div>    
+            <div id="playerTop">
+            </div>
+            <div id="playerBottom">
+            </div>
+            <div id="line">
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            var playerTop = document.getElementById("playerTop");
+            var playerBottom = document.getElementById("playerBottom");
+            var line = document.getElementById("line");
+            var map = document.getElementById("map");
+            var textBox = document.getElementById("textBox");
+            var title = document.getElementById("title");
+            var moveVal = 15;
+            var showTextFlag = false;
+            
+            function elementPosition(ele){
+                this.top = parseInt(window.getComputedStyle(ele,null).getPropertyValue("top"),[0]);
+                this.bottom = this.top + parseInt(window.getComputedStyle(ele,null).getPropertyValue("height"),[0]);
+                this.left = parseInt(window.getComputedStyle(ele,null).getPropertyValue("left"),[0]);
+                this.right =  this.left + parseInt(window.getComputedStyle(ele,null).getPropertyValue("width"),[0]);
+            }
+            
+            function moveElement(ele, xVal, yVal){
+                var elePos = new elementPosition(ele);
+                ele.style.top = (elePos.top + yVal) + 'px';
+                ele.style.left = (elePos.left + xVal) + 'px';
+                delete elePos;
+            }
+            
+            function checkCollision(eleA, eleB){
+                var aPos = new elementPosition(eleA);
+                var bPos = new elementPosition(eleB);
+                
+                if((aPos.top < bPos.bottom) && (aPos.bottom > bPos.top) && (aPos.left < bPos.right) && (aPos.right > bPos.left)){
+                    return true;
+                }
+                return false;
+            }
+            
+            title.addEventListener("click", function(){
+                title.style.display = "none";
+                map.style.display = "block";
+            }, false);
+            
+            document.body.addEventListener("keypress", function(e){
+                console.log('press ' , e.keyCode);
+                switch(e.keyCode){
+                    case 119: //w
+                    case 12616:
+                        moveElement(playerTop, 0, -moveVal);
+                        moveElement(playerBottom, 0, -moveVal);
+                        console.log('up');
+                        break;
+                    case 97: //a
+                    case 12609:
+                        moveElement(playerTop, -moveVal, 0);
+                        moveElement(playerBottom, -moveVal, 0);
+                        console.log('left');
+                        break;
+                    case 115: //s
+                    case 12596:
+                        moveElement(playerTop, 0, moveVal);
+                        moveElement(playerBottom, 0, moveVal);
+                        console.log('down');
+                        break;
+                    case 100: //d
+                    case 12615:
+                        playerBottom.id = "pbRunR";
+                        moveElement(playerTop, moveVal, 0);
+                        moveElement(playerBottom, moveVal, 0);
+                        console.log('right');
+                        break;
+                    default:
+                        console.log(e.keyCode);
+                }
+                if(checkCollision(playerTop, line) || checkCollision(playerBottom, line)){
+                    showTextBox();
+                    console.log("ouch!");
+                }   
+            }, false);
+            
+            document.body.addEventListener("keyup", function(e){
+                console.log('keyup', e.keyCode);
+                switch(e.keyCode){
+                    case 68:
+                        playerBottom.id = "playerBottom";
+                        console.log('rightUp');
+                        break;
+                }
+            }, false);
+            
+            function showTextBox(){
+                if (showTextFlag === false){
+                    showTextFlag = true;
+                    textBox.style.display = "block";
+                }
+            }
+        </script>
+    </body>
+</html>

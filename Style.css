@@ -1,0 +1,128 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+#map, #title{
+    position: relative;
+    z-index: 0;
+    width: 800px;
+    height: 600;
+    margin-left: auto;
+    margin-right: auto;
+}
+#map{
+    background-image: url(image/BGimage.png);
+    background-repeat: no-repeat;
+    display: none;
+}
+#title{
+    background-color: black;
+    text-align: center;
+    color: white;
+}
+#title > p{
+    padding: 80px;
+    font-size: 40px;
+}
+
+#textBox{
+    display: none;
+    font-size: 40px;
+    text-align: center;
+    color: red;
+    width: 300px;
+    height: auto;
+    position: relative;
+    margin: auto;
+    top: 100px;
+}
+
+#playerTop{
+    z-index: 1;
+    position: absolute;
+    background-image: url(image/STANDSET.png);
+    background-position: -7px -6px;
+    background-repeat: no-repeat;
+    width: 31px;
+    height: 29px;
+    left: 350px;
+    top: 520px;
+    -webkit-animation: tStanding 1s steps(1) infinite;
+}
+
+
+#playerBottom, #pbRunR, #pbRunL{
+    z-index: 1;
+    position: absolute;
+    background-repeat: no-repeat;
+    width: 31px;
+    height: 18px;
+    left: 350px;
+    top: 542px;
+}
+
+#playerBottom{
+    background-image: url(image/STAND_R_LEG.png);
+}
+
+#pbRunR{
+     -webkit-animation: bRunning 1s steps(1) infinite;
+}
+
+#line{
+    width: 5px;
+    height: 100px;
+    background-color: black;
+    position: absolute;
+    top: 468px;
+    left: 500px;
+}
+
+
+
+@-webkit-keyframes tStanding{
+    0% {
+		background-position: -7px -6px;
+	}
+	20% {
+		background-position: -42px -6px;
+	}
+	40% {
+		background-position: -78px -6px;
+	}
+	60% {
+		background-position: -115px -6px;
+	}
+    80% {
+		background-position: -78px -6px;
+	}
+    100% {
+		background-position: -42px -6px;
+	}
+
+}
+
+@-webkit-keyframes bRunning{
+    0% {
+        background-image: url(image/run/RUN_BOTTOM_R_00.png);
+        background-position: -3px 0;
+	}
+	20% {
+        background-image: url(image/run/RUN_BOTTOM_R_01.png);
+        background-position: -3px 0;
+	}
+	40% {
+        background-image: url(image/run/RUN_BOTTOM_R_02.png);
+        background-position: -3px 0;
+	}
+	60% {
+        background-image: url(image/run/RUN_BOTTOM_R_03.png);
+        background-position: -3px 0;
+	}
+    80% {
+        background-image: url(image/run/RUN_BOTTOM_R_04.png);
+        background-position: -3px 0;
+	}
+    100% {
+        background-image: url(image/run/RUN_BOTTOM_R_05.png);
+        background-position: -3px 0;
+	}
+
+}
