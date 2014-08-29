@@ -39,6 +39,7 @@ function GameObject(setting){
 		"render" : setting.render
 		//render는 오브젝트 성격에 따라 정지된 이미지일 수도 있고 애니메이션일 수도 있으므로 각자 알아서 함수 갖고 있도록 한다.
 	};		
+
 	GameObject.prototype.getType = function() {
 		return obj.type;
 	};
@@ -116,9 +117,11 @@ function GameObject(setting){
 	GameObject.prototype.render = function() {
 		obj.render();
 	};
-	//함수 밖에서 prototype 사용해서 메소드 생성하면 실행이 안 됨. (obj가 undefined가 됨)
+//함수 밖에서 prototype 사용해서 메소드 생성하면 실행이 안 됨. (obj가 not defined 됨)
 }
-//new 선언할 때 입력하는 setting object의 프로퍼티들 값이 특정 타입이 아니면 안 받도록 하고 싶은데 어떻게 해야 할까. if 처리했더니 빈 오브젝트로 생성됨...
+	//
+	//
+//new 선언할 때 입력하는 setting object의 프로퍼티들 값이 특정 타입이 아니면 아예 생성하지 않게 하고 싶은데 어떻게 해야 할까. if 처리했더니 빈 오브젝트로 생성됨...
 
 // Sprite.prototype.render = function() {
 // 	sprite.context.drawImage(this.sprite.image, 0, 0, this.sprite.width, this.sprite.height, 0, 0, this.sprite.width, this.sprite.height);
@@ -159,110 +162,117 @@ function ObjectArray(){
  * 초기화한 결과, 스프라이트 풀에는 id값과 이미지 로드된 엘리먼트들이 들어간 오브젝트가 포함된다. 스프라이트를 실제 사용할 때 id값으로 불러다 사용하면 됨.
  * 풀에 모든 스프라이트 리소스가 로드되었는지 확인 후 게임이 시작되도록 만들어야 함.
  */
-function SpritePool(){
-	var instance; 
-	SpritePool = function SpritePool(){
-		return instance;
-	};
-	SpritePool.prototype = this;
+ function SpritePool(){
+ 	var instance; 
+ 	SpritePool = function SpritePool(){
+ 		return instance;
+ 	};
+ 	SpritePool.prototype = this;
 
-	instance = new SpritePool();
-	instance.constructor = SpritePool;
+ 	instance = new SpritePool();
+ 	instance.constructor = SpritePool;
 
-	var pool = {};
-	var loadCompleted = 0;
-	instance.add = function(id, imgSrc){
-		pool.id = function(){
-			var img = new Image();
-			img.src = imgSrc;
-			img.onload = function(){
-				loadCompleted++;
-			};
-			return img;
-		}();
-	};
-	instance.getSprite = function(id){
-		return pool.id;
-	};
-	instance.isLoadCompleted = function(){
-		var poolSize = Object.keys(pool).length;
-		if (poolSize === loadCompleted) {
-			return true;
-		} else{
-			return false;
-		}
-	};
+ 	var pool = {};
+ 	var loadCompleted = 0;
+ 	instance.add = function(id, imgSrc){
+ 		pool[id] = function(){
+ 			var img = new Image();
+ 			img.src = imgSrc;
+ 			img.onload = function(){
+ 				loadCompleted++;
+ 			};
+ 			return img;
+ 		}();
+ 	};
+ 	instance.getSprite = function(id){
+ 		return pool[id];
+ 	};
+ 	instance.isLoadCompleted = function(){
+ 		var poolSize = Object.keys(pool).length;
+ 		if (poolSize === loadCompleted) {
+ 			return true;
+ 		} else{
+ 			return false;
+ 		}
+ 	};
+ 	instance.getPool = function(){
+ 		return pool;
+ 	};
 
-	return instance;
-}
+ 	return instance;
+ }
 
-function initSpritePool(){
-	console.log("앞");
-	SpritePool().add("background", "image/BGimage.png");
-	console.log("뒤");
-}
+ function Update(){
+ 	var instance;
 
-function Update(){
-	var instance;
+ 	Update = function Update(){
+ 		return instance;
+ 	};
+ 	Update.prototype = this;
 
-	Update = function Update(){
-		return instance;
-	};
-	Update.prototype = this;
+ 	instance = new Update();
+ 	instance.constructor = Update;
 
-	instance = new Update();
-	instance.constructor = Update;
+ 	for (var i = 0; i < ObjectArray().length(); i++) {
+ 		ObjectArray().get(i).update();
+ 	}
+ }
 
-	for (var i = 0; i < ObjectArray().length(); i++) {
-		ObjectArray().get(i).update();
-	}
-}
+ function Render(){
+ 	var instance;
 
-function Render(){
-	var instance;
+ 	Render = function Render(){
+ 		return instance;
+ 	};
+ 	Render.prototype = this;
 
-	Render = function Render(){
-		return instance;
-	};
-	Render.prototype = this;
+ 	instance = new Render();
+ 	instance.constructor = Render;
 
-	instance = new Render();
-	instance.constructor = Render;
+ 	for (var i = 0; i < ObjectArray().length(); i++) {
+ 		ObjectArray().get(i).render();
+ 	}
+ }
 
-	for (var i = 0; i < ObjectArray().length(); i++) {
-		ObjectArray().get(i).render();
-	}
-}
+ function gameLoop(){
+ 	Update();
+ 	Render();
+ }
 
-function gameLoop(){
-	Update();
-	Render();
-}
+ function initSpritePool(){
+ 	SpritePool().add("background", "image/BGimage.png");
+ 	SpritePool().add("pc", "image/STAND_R_00.png");
+ }
 
-// var pc = new GameObject({
-// 	"type" : "character",
-// 	"id" : "player",
-// 	"width" : 31,
-// 	"height" : 74,
-// 	"posX" : 400,
-// 	"posY" : 500,
-// 	"vecX" : 0,
-// 	"vecY" : 0,
-// 	"accelX" : 0,
-// 	"accelY" : 0,
-// 	"sprite" : 	"image/STAND_R_00.png",
-// 	"update" : function(){},
-// 	"render" : function(){
-// 		context.drawImage(this.sprite, 0, 0, this.width, this.height, this.posX, this.posY, this.width, this.height);
-// 	}
-// });
+ var pc = new GameObject({
+ 	"type" : "character",
+ 	"id" : "player",
+ 	"width" : 31,
+ 	"height" : 74,
+ 	"posX" : 400,
+ 	"posY" : 500,
+ 	"vecX" : 0,
+ 	"vecY" : 0,
+ 	"accelX" : 0,
+ 	"accelY" : 0,
+ 	"spriteId" : "image/STAND_R_00.png",
+ 	"update" : function(){
 
-window.addEventListener("load", function(){
+ 	},
+ 	"render" : function(){
+ 		context.drawImage(SpritePool().getSprite("pc"), 0, 0, this.width, this.height, this.posX, this.posY, this.width, this.height);
+ 	}
+ });
+
+ window.addEventListener("load", function(){
 	// debugger;
 	initSpritePool();
+	context.font = "50px serif";
+	context.fillText("Loading.....", 280, 300);
 	var t = setInterval(function(){
+		console.log("image loading....");
 		if (SpritePool().isLoadCompleted()){
-			console.log(SpritePool().isLoadCompleted());
+			console.log("complete.");
 			context.drawImage(SpritePool().getSprite("background"), 0, 0);
 			clearInterval(t);
 		}
