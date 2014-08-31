@@ -23,7 +23,7 @@ function GameObject(setting){
 	// 	console.log("You need an update method");
 	// 	return;
 	// } 
-	var obj = {
+	GameObject.obj = {
 		"type" : setting.type,
 		"id" : setting.id,
 		"width" : setting.width,
@@ -39,86 +39,83 @@ function GameObject(setting){
 		"render" : setting.render
 		//render는 오브젝트 성격에 따라 정지된 이미지일 수도 있고 애니메이션일 수도 있으므로 각자 알아서 함수 갖고 있도록 한다.
 	};		
-
-	GameObject.prototype.getType = function() {
-		return obj.type;
-	};
-	GameObject.prototype.setType = function(type) {
-		obj.type = type;
-	};
-	GameObject.prototype.getId = function() {
-		return obj.id;
-	};
-	GameObject.prototype.setId = function(id) {
-		obj.id = id;
-	};
-	GameObject.prototype.getWidth = function(){
-		return obj.width;
-	};
-	GameObject.prototype.setWidth = function(width){
-		obj.width = width;
-	};
-	GameObject.prototype.getHeight = function(){
-		return obj.height;
-	};
-	GameObject.prototype.setHeight = function(height){
-		obj.height = height;
-	};
-	GameObject.prototype.getPosX = function() {
-		return obj.posX;
-	};
-	GameObject.prototype.setPosX = function(posX) {
-		obj.posX = posX;
-	};
-	GameObject.prototype.getPosY = function() {
-		return obj.posY;
-	};
-	GameObject.prototype.setPosY = function(posY) {
-		obj.posY = posY;
-	};
-	GameObject.prototype.getVecX = function() {
-		return obj.vecX;
-	};
-	GameObject.prototype.setVecX = function(vecX) {
-		obj.vecX = vecX;
-	};
-	GameObject.prototype.getVecY = function() {
-		return obj.vecY;
-	};
-	GameObject.prototype.setVecY = function(vecY) {
-		obj.vecY = vecY;
-	};
-	GameObject.prototype.getAccelX = function() {
-		return obj.accelX;
-	};
-	GameObject.prototype.setAccelX = function(accelX) {
-		obj.accelX = accelX;
-	};
-	GameObject.prototype.getAccelY = function() {
-		return obj.accelY;
-	};
-	GameObject.prototype.setAccelY = function(accelY) {
-		obj.accelY = accelY;
-	};
-	GameObject.prototype.setSprite = function(sprite) {
-		var tempImg = new Image();
-		tempImg.src = sprite;
-		obj.sprite = tempImg;
-	};
-	GameObject.prototype.getSprite = function() {
-		return obj.sprite;
-	};
-	GameObject.prototype.setUpdate = function(updateFunc) {
-		obj.update = updateFunc;
-	};
-	GameObject.prototype.setRender = function(renderFunc) {
-		obj.render = renderFunc;
-	};
-	GameObject.prototype.render = function() {
-		obj.render();
-	};
-//함수 밖에서 prototype 사용해서 메소드 생성하면 실행이 안 됨. (obj가 not defined 됨)
 }
+GameObject.prototype.getType = function() {
+	return GameObject.obj.type;
+};
+GameObject.prototype.setType = function(type) {
+	GameObject.obj.type = type;
+};
+GameObject.prototype.getId = function() {
+	return GameObject.obj.id;
+};
+GameObject.prototype.setId = function(id) {
+	GameObject.obj.id = id;
+};
+GameObject.prototype.getWidth = function(){
+	return GameObject.obj.width;
+};
+GameObject.prototype.setWidth = function(width){
+	GameObject.obj.width = width;
+};
+GameObject.prototype.getHeight = function(){
+	return GameObject.obj.height;
+};
+GameObject.prototype.setHeight = function(height){
+	GameObject.obj.height = height;
+};
+GameObject.prototype.getPosX = function() {
+	return GameObject.obj.posX;
+};
+GameObject.prototype.setPosX = function(posX) {
+	GameObject.obj.posX = posX;
+};
+GameObject.prototype.getPosY = function() {
+	return GameObject.obj.posY;
+};
+GameObject.prototype.setPosY = function(posY) {
+	GameObject.obj.posY = posY;
+};
+GameObject.prototype.getVecX = function() {
+	return GameObject.obj.vecX;
+};
+GameObject.prototype.setVecX = function(vecX) {
+	GameObject.obj.vecX = vecX;
+};
+GameObject.prototype.getVecY = function() {
+	return GameObject.obj.vecY;
+};
+GameObject.prototype.setVecY = function(vecY) {
+	GameObject.obj.vecY = vecY;
+};
+GameObject.prototype.getAccelX = function() {
+	return GameObject.obj.accelX;
+};
+GameObject.prototype.setAccelX = function(accelX) {
+	GameObject.obj.accelX = accelX;
+};
+GameObject.prototype.getAccelY = function() {
+	return GameObject.obj.accelY;
+};
+GameObject.prototype.setAccelY = function(accelY) {
+	GameObject.obj.accelY = accelY;
+};
+GameObject.prototype.getSpriteId = function() {
+	return GameObject.obj.spriteId;
+};
+GameObject.prototype.setSpriteId = function(spriteId) {
+	GameObject.obj.spriteId = spriteId;
+};
+GameObject.prototype.setUpdate = function(updateFunc) {
+	GameObject.obj.update = updateFunc;
+};
+GameObject.prototype.setRender = function(renderFunc) {
+	GameObject.obj.render = renderFunc;
+};
+GameObject.prototype.render = function() {
+	GameObject.obj.render();
+};
+//함수 밖에서 prototype 사용해서 메소드 생성하면 실행이 안 됨. (obj가 not defined 됨)
 	//
 	//
 //new 선언할 때 입력하는 setting object의 프로퍼티들 값이 특정 타입이 아니면 아예 생성하지 않게 하고 싶은데 어떻게 해야 할까. if 처리했더니 빈 오브젝트로 생성됨...
@@ -246,7 +243,7 @@ function ObjectArray(){
 
  var pc = new GameObject({
  	"type" : "character",
- 	"id" : "player",
+ 	"id" : "pc",
  	"width" : 31,
  	"height" : 74,
  	"posX" : 400,
@@ -260,9 +257,16 @@ function ObjectArray(){
 
  	},
  	"render" : function(){
- 		context.drawImage(SpritePool().getSprite("pc"), 0, 0, this.width, this.height, this.posX, this.posY, this.width, this.height);
+ 		context.drawImage(SpritePool().getSprite(this.id), 0, 0, this.width, this.height, this.posX, this.posY, this.width, this.height);
  	}
  });
+
+ var tob = {
+ 	arr : {},
+ 	ff : function add(name, value){
+ 		this.arr[name] = value;
+ 	}
+ };
 
  window.addEventListener("load", function(){
 	// debugger;
