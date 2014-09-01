@@ -1,245 +1,153 @@
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
+var FPS = 60;
+var oldTime = Date.now();
+var newTime;
 
-function GameObject(setting){
-	// debugger;
-	// if (typeof setting.type != "string") {
-	// 	console.log("GameObject.type is not a string");
-	// 	return;
-	// }
-	// else if (typeof setting.id != "string") {
-	// 	console.log("GameObject.id is not a string");
-	// 	return;
-	// } else if (typeof setting.vecX != "number" || typeof setting.vecY != "number") {
-	// 	console.log("vecX or vecY is not a number");
-	// 	return;
-	// } else if (typeof setting.accelX != "number" || typeof setting.accelY != "number") {
-	// 	console.log("accelX or accelY is not a number");
-	// 	return;
-	// } else if (setting.sprite instanceof Sprite !== true){
-	// 	console.log("You need a Sprite instance");
-	// 	return;
-	// } else if (typeof setting.update != "function") {
-	// 	console.log("You need an update method");
-	// 	return;
-	// } 
-	GameObject.obj = {
-		"type" : setting.type,
-		"id" : setting.id,
-		"width" : setting.width,
-		"height" : setting.height,
-		"posX" : setting.posX,
-		"posY" : setting.posY,
-		"vecX" : setting.vecX,
-		"vecY" : setting.vecY,
-		"accelX" : setting.accelX,
-		"accelY" : setting.accelY,
-		"spriteId" : setting.spriteId,
-		"update" : setting.update,
-		"render" : setting.render
-		//render는 오브젝트 성격에 따라 정지된 이미지일 수도 있고 애니메이션일 수도 있으므로 각자 알아서 함수 갖고 있도록 한다.
-	};		
-}
-GameObject.prototype.getType = function() {
-	return GameObject.obj.type;
-};
-GameObject.prototype.setType = function(type) {
-	GameObject.obj.type = type;
-};
-GameObject.prototype.getId = function() {
-	return GameObject.obj.id;
-};
-GameObject.prototype.setId = function(id) {
-	GameObject.obj.id = id;
-};
-GameObject.prototype.getWidth = function(){
-	return GameObject.obj.width;
-};
-GameObject.prototype.setWidth = function(width){
-	GameObject.obj.width = width;
-};
-GameObject.prototype.getHeight = function(){
-	return GameObject.obj.height;
-};
-GameObject.prototype.setHeight = function(height){
-	GameObject.obj.height = height;
-};
-GameObject.prototype.getPosX = function() {
-	return GameObject.obj.posX;
-};
-GameObject.prototype.setPosX = function(posX) {
-	GameObject.obj.posX = posX;
-};
-GameObject.prototype.getPosY = function() {
-	return GameObject.obj.posY;
-};
-GameObject.prototype.setPosY = function(posY) {
-	GameObject.obj.posY = posY;
-};
-GameObject.prototype.getVecX = function() {
-	return GameObject.obj.vecX;
-};
-GameObject.prototype.setVecX = function(vecX) {
-	GameObject.obj.vecX = vecX;
-};
-GameObject.prototype.getVecY = function() {
-	return GameObject.obj.vecY;
-};
-GameObject.prototype.setVecY = function(vecY) {
-	GameObject.obj.vecY = vecY;
-};
-GameObject.prototype.getAccelX = function() {
-	return GameObject.obj.accelX;
-};
-GameObject.prototype.setAccelX = function(accelX) {
-	GameObject.obj.accelX = accelX;
-};
-GameObject.prototype.getAccelY = function() {
-	return GameObject.obj.accelY;
-};
-GameObject.prototype.setAccelY = function(accelY) {
-	GameObject.obj.accelY = accelY;
-};
-GameObject.prototype.getSpriteId = function() {
-	return GameObject.obj.spriteId;
-};
-GameObject.prototype.setSpriteId = function(spriteId) {
-	GameObject.obj.spriteId = spriteId;
-};
-GameObject.prototype.setUpdate = function(updateFunc) {
-	GameObject.obj.update = updateFunc;
-};
-GameObject.prototype.setRender = function(renderFunc) {
-	GameObject.obj.render = renderFunc;
-};
-GameObject.prototype.render = function() {
-	GameObject.obj.render();
-};
-//함수 밖에서 prototype 사용해서 메소드 생성하면 실행이 안 됨. (obj가 not defined 됨)
-	//
-	//
-//new 선언할 때 입력하는 setting object의 프로퍼티들 값이 특정 타입이 아니면 아예 생성하지 않게 하고 싶은데 어떻게 해야 할까. if 처리했더니 빈 오브젝트로 생성됨...
+
 
 // Sprite.prototype.render = function() {
 // 	sprite.context.drawImage(this.sprite.image, 0, 0, this.sprite.width, this.sprite.height, 0, 0, this.sprite.width, this.sprite.height);
 // };
 
-function ObjectArray(){
-	var instance;
+// function ObjectArray(){
+//  	var instance;
 
-	ObjectArray = function ObjectArray(){
-		return instance;
-	};
+// 	ObjectArray = function ObjectArray(){
+// 		return instance;
+// 	};
 
-	ObjectArray.prototype = this;
-	//프로토타입을 변경하면 어떻게 되는가?
+// 	ObjectArray.prototype = this;
+// 	//프로토타입을 변경하면 어떻게 되는가?
 
-	instance = new ObjectArray();
+// 	instance = new ObjectArray();
 
-	instance.constructor = ObjectArray;
-	//constructor - 생성자 포인터 - 가 의미하는 바가 정확히 뭐지 
+// 	instance.constructor = ObjectArray;
+// 	//constructor - 생성자 포인터 - 가 의미하는 바가 정확히 뭐지 
 
-	var arr = []; 
-	//instance.arr로 하면 사용불가 
-	instance.add = function(obj){
-		arr.push(obj);
-	};
-	instance.get = function(num){
-		return arr[num];
-	};
-	instance.length = function(){
-		return arr.length;
-	};
+// 	var arr = []; 
+// 	//instance.arr로 하면 사용불가 
+// 	instance.add = function(obj){
+// 		arr.push(obj);
+// 	};
+// 	instance.get = function(num){
+// 		return arr[num];
+// 	};
+// 	instance.length = function(){
+// 		return arr.length;
+// 	};
 
-	return instance;
-}
+// 	return instance;
+// }
 
 /**
  * 게임에 사용할 스프라이트는 모두 여기 보관함. 초기 사용시에 init을 따로 돌릴 것이다. 
  * 초기화한 결과, 스프라이트 풀에는 id값과 이미지 로드된 엘리먼트들이 들어간 오브젝트가 포함된다. 스프라이트를 실제 사용할 때 id값으로 불러다 사용하면 됨.
  * 풀에 모든 스프라이트 리소스가 로드되었는지 확인 후 게임이 시작되도록 만들어야 함.
- */
- function SpritePool(){
- 	var instance; 
- 	SpritePool = function SpritePool(){
- 		return instance;
- 	};
- 	SpritePool.prototype = this;
+ // */
+ // function SpritePool(){
+ // 	var instance; 
+ // 	SpritePool = function SpritePool(){
+ // 		return instance;
+ // 	};
+ // 	SpritePool.prototype = this;
 
- 	instance = new SpritePool();
- 	instance.constructor = SpritePool;
+ // 	instance = new SpritePool();
+ // 	instance.constructor = SpritePool;
 
- 	var pool = {};
- 	var loadCompleted = 0;
- 	instance.add = function(id, imgSrc){
- 		pool[id] = function(){
- 			var img = new Image();
- 			img.src = imgSrc;
- 			img.onload = function(){
- 				loadCompleted++;
- 			};
- 			return img;
- 		}();
- 	};
- 	instance.getSprite = function(id){
- 		return pool[id];
- 	};
- 	instance.isLoadCompleted = function(){
- 		var poolSize = Object.keys(pool).length;
- 		if (poolSize === loadCompleted) {
- 			return true;
- 		} else{
- 			return false;
- 		}
- 	};
- 	instance.getPool = function(){
- 		return pool;
- 	};
+ // 	var pool = {};
+ // 	var loadCompleted = 0;
+ // 	instance.add = function(id, imgSrc){
+ // 		pool[id] = function(){
+ // 			var img = new Image();
+ // 			img.src = imgSrc;
+ // 			img.onload = function(){
+ // 				loadCompleted++;
+ // 			};
+ // 			return img;
+ // 		}();
+ // 	};
+ // 	instance.getSprite = function(id){
+ // 		return pool[id];
+ // 	};
+ // 	instance.isLoadCompleted = function(){
+ // 		var poolSize = Object.keys(pool).length;
+ // 		if (poolSize === loadCompleted) {
+ // 			return true;
+ // 		} else{
+ // 			return false;
+ // 		}
+ // 	};
+ // 	instance.getPool = function(){
+ // 		return pool;
+ // 	};
 
- 	return instance;
- }
+ // 	return instance;
+ // }
 
- function Update(){
- 	var instance;
+ function Update(dTime){
+ 	// var instance;
 
- 	Update = function Update(){
- 		return instance;
- 	};
- 	Update.prototype = this;
+ 	// Update = function Update(){
+ 	// 	return instance;
+ 	// };
+ 	// Update.prototype = this;
 
- 	instance = new Update();
- 	instance.constructor = Update;
+ 	// instance = new Update();
+ 	// instance.constructor = Update;
 
- 	for (var i = 0; i < ObjectArray().length(); i++) {
- 		ObjectArray().get(i).update();
+ 	for (var i = 0; i < ObjectArray.length(); i++) {
+ 		// console.log(dTime);
+ 		// console.log(ObjectArray.get(i));
+ 		ObjectArray.get(i).update(dTime);
  	}
  }
 
  function Render(){
- 	var instance;
+ 	// var instance;
 
- 	Render = function Render(){
- 		return instance;
- 	};
- 	Render.prototype = this;
+ 	// Render = function Render(){
+ 	// 	return instance;
+ 	// };
+ 	// Render.prototype = this;
 
- 	instance = new Render();
- 	instance.constructor = Render;
+ 	// instance = new Render();
+ 	// instance.constructor = Render;
 
- 	for (var i = 0; i < ObjectArray().length(); i++) {
- 		ObjectArray().get(i).render();
+ 	context.clearRect(0, 0, canvas.width, canvas.height);
+ 	for (var i = 0; i < ObjectArray.length(); i++) {
+ 		ObjectArray.get(i).render();
  	}
  }
 
  function gameLoop(){
- 	Update();
+ 	newTime = Date.now();
+ 	var dTime = (newTime - oldTime)*0.001;
+ 	oldTime = newTime;
+ 	Update(dTime);
+ 	console.log(dTime);
  	Render();
  }
 
- function initSpritePool(){
- 	SpritePool().add("background", "image/BGimage.png");
- 	SpritePool().add("pc", "image/STAND_R_00.png");
- }
+var Background = new GameObject({
+	"type" : "object",
+ 	"id" : "Background",
+ 	"width" : 800,
+ 	"height" : 600,
+ 	"posX" : 0,
+ 	"posY" : 0,
+ 	"vecX" : 0,
+ 	"vecY" : 0,
+ 	"accelX" : 0,
+ 	"accelY" : 0,
+ 	"SpriteSrc" : "image/BGimage.png",
+ 	"update" : function(){
+ 		// console.log("deefasef");
+ 	},
+ 	"render" : function(){
+ 		context.drawImage(SpritePool.get(this.id), 0, 0, this.width, this.height, this.posX, this.posY, this.width, this.height);
+ 	}
+});
 
  var pc = new GameObject({
  	"type" : "character",
@@ -247,37 +155,83 @@ function ObjectArray(){
  	"width" : 31,
  	"height" : 74,
  	"posX" : 400,
- 	"posY" : 500,
+ 	"posY" : 450,
  	"vecX" : 0,
  	"vecY" : 0,
  	"accelX" : 0,
- 	"accelY" : 0,
- 	"spriteId" : "image/STAND_R_00.png",
- 	"update" : function(){
-
+ 	"accelY" : -9.8,
+ 	"isJumping" : false,
+ 	"SpriteSrc" : "image/STAND_R_00.png",
+ 	"update" : function(dTime){
+ 		// debugger;
+ 		var keyState = ControlManager.KeyMap;
+ 		// console.log(keyState);
+ 		if (keyState.left === true && keyState.right === false) {
+ 			console.log("left pressed");
+ 			this.vecX = -120;
+ 		}
+ 		else if (keyState.right === true && keyState.left === false) {
+ 			this.vecX = 120;
+ 		}
+ 		else{
+ 			this.vecX = 0;
+ 		}
+ 		// console.log(this.vecX);
+ 		// if (keyState.spacebar === true && this.isJumping === false) {
+ 		// 	this.isJumping = true;
+ 		// 	//점프 관련은 나중에 추가하는 걸로
+ 		// }
+ 		//가속도가 어떻게 적용되는지 다시 알아볼것 
+ 		if (this.posX <= canvas.width - this.width && this.posX >= 0) {
+ 			this.posX = this.posX + ((this.vecX + (this.vecX * this.accelX)) * dTime);
+ 		}
  	},
  	"render" : function(){
- 		context.drawImage(SpritePool().getSprite(this.id), 0, 0, this.width, this.height, this.posX, this.posY, this.width, this.height);
+ 		// console.log(SpritePool.get(this.id));
+ 		console.log("posX : " + this.posX + " posY : " + this.posY);
+ 		context.drawImage(SpritePool.get(this.id), 0, 0, this.width, this.height, this.posX, this.posY, this.width, this.height);
  	}
  });
 
- var tob = {
- 	arr : {},
- 	ff : function add(name, value){
- 		this.arr[name] = value;
- 	}
- };
+
+ function initSpritePool(){
+ 	// console.log(pc);
+ 	// SpritePool().add("pc", "image/STAND_R_00.png");
+ 	// console.log(Background);
+ 	// SpritePool().add("Background", "image/BGimage.png");
+ 	// SpritePool.add(Background);
+ 	// SpritePool.add(pc);
+ 	SpritePool.init();
+ }
+
+ function initObjectArray(){
+ 	ObjectArray.add(Background);
+ 	ObjectArray.add(pc);
+ }
 
  window.addEventListener("load", function(){
+
+ 	/*
+ 	1. 인스턴스 생성(게임관련)
+ 	1.1 만들어진 인스턴스를 어레이에 보관.
+ 	2. 렌더링 시작 !
+ 	3. 루프를 돈다.
+ 	 */
+
 	// debugger;
+	initObjectArray();
 	initSpritePool();
 	context.font = "50px serif";
 	context.fillText("Loading.....", 280, 300);
 	var t = setInterval(function(){
 		console.log("image loading....");
-		if (SpritePool().isLoadCompleted()){
+		if (SpritePool.isLoadCompleted()){
 			console.log("complete.");
-			context.drawImage(SpritePool().getSprite("background"), 0, 0);
+			context.drawImage(SpritePool.get(Background.getId()), 0, 0);
+			// Render();
+			setInterval(function(){
+				gameLoop();
+			}, 1000/FPS);
 			clearInterval(t);
 		}
 	}, 10);

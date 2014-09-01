@@ -4,7 +4,6 @@ var ControlManager = {
 		document.body.addEventListener("keydown", function(e){
 			var keyCode = (e.which)? e.which : e.keyCode;
 			ControlManager.toggleKeyDown(keyCode);
-			console.log(ControlManager.getCurrentKeyState());
 		}, false);
 		document.body.addEventListener("keyup", function(e){
 			var keyCode = (e.which)? e.which : e.keyCode;
@@ -103,6 +102,7 @@ var ControlManager = {
      * 현재 KeyMap을 확인해서 값이 True인 것들만 합쳐서 반환함. (합친 값을 사용하므로 왼쪽 + 위 / 오른쪽 + 스페이스바 같은 동시입력 처리 가능)
      * @return {[type]} [description]
      */
+    //이거 필요 없네.... 그냥 KeyMap을 바로 쓰면 되네..... 이거 만든다고 뻘짓 실컷 했는데 망함............
     getCurrentKeyState : function(){
     	var state = [];
     	for (var i in this.KeyMap){
@@ -113,6 +113,9 @@ var ControlManager = {
     	}
     	return state;
     },
+    getKeyMap : function(){
+    	return this.KeyMap;
+    }
 };
 
 ControlManager.init();
