@@ -37,6 +37,8 @@ function GameObject(setting){
 		//render는 오브젝트 성격에 따라 정지된 이미지일 수도 있고 애니메이션일 수도 있으므로 각자 알아서 함수 갖고 있도록 한다.
 		//
 	};
+	// ObjectArray.add(this.obj);
+	// 오브젝트 생성과 동시에 ObjectArray에 넣게 하고 싶었으나 이렇게 하면 프로토타입에 있는 메서드들이 적용이 안 되더라...
 }
 GameObject.prototype.getType = function() {
 	return this.obj.type;
@@ -121,17 +123,3 @@ GameObject.prototype.render = function() {
 	//
 	//
 //new 선언할 때 입력하는 setting object의 프로퍼티들 값이 특정 타입이 아니면 아예 생성하지 않게 하고 싶은데 어떻게 해야 할까. if 처리했더니 빈 오브젝트로 생성됨...
-
-
-// var ObjectArray = {
-// 	array : [],
-// 	add : function(object){
-// 		array.push(object);
-// 	},
-// 	get : function(num){
-// 		return array[num];
-// 	},
-// 	length : function(){
-// 		return arr.length;
-// 	}
-// };

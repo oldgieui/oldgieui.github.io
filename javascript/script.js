@@ -226,13 +226,13 @@ var Background = new GameObject({
 	var t = setInterval(function(){
 		console.log("image loading....");
 		if (SpritePool.isLoadCompleted()){
+			clearInterval(t);
 			console.log("complete.");
 			context.drawImage(SpritePool.get(Background.getId()), 0, 0);
 			// Render();
 			setInterval(function(){
 				gameLoop();
 			}, 1000/FPS);
-			clearInterval(t);
 		}
 	}, 10);
 }, false);

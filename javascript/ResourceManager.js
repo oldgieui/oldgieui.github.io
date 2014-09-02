@@ -18,6 +18,7 @@ var SpritePool = {
 	// 	this.pool = {};
 	// 	this.loadCompleted = 0;
 	// },
+	
 	pool : {},
 	loadCompleted : 0,
 	/**

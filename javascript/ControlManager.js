@@ -1,3 +1,50 @@
+// function ControlManager(){
+// 	var KeyMap = {
+// 		"up" : false,
+// 		"down" : false,
+// 		"left" : false,
+// 		"right" : false,
+// 		"spacebar" : false
+// 	};
+// 	var instance; 
+// 	ControlManager = function(){
+// 		return instance;
+// 	};
+// 	ControlManager.prototype = this;
+// 	instance = new ControlManager();
+// 	return instance;
+// }
+
+// ControlManager.prototype.init = function() {
+// 	var e = event ? event : window.event;
+// 	document.body.addEventListener("keydown", function(e){
+// 		var keyCode = (e.which)? e.which : e.keyCode;
+// 		ControlManager.toggleKeyDown(keyCode);
+// 	}, false);
+// 	document.body.addEventListener("keyup", function(e){
+// 		var keyCode = (e.which)? e.which : e.keyCode;
+// 		ControlManager.toggleKeyUp(keyCode);
+// 	}, false);
+// };
+
+// ControlManager.prototype.setUpTrue = function() {
+// 	this.KeyMap.up = true;
+// };
+
+// ControlManager.prototype.init = function() {
+// 	this.KeyMap = {
+// 		"up" : false,
+// 		"down" : false,
+// 		"left" : false,
+// 		"right" : false,
+// 		"spacebar" : false
+// 	};
+// };
+
+// ControlManager.prototype.getKeyMap = function() {
+// 	return this.KeyMap;
+// };
+
 var ControlManager = {
 	init : function(){
 		var e = event ? event : window.event;
