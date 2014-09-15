@@ -1,139 +1,31 @@
-var canvas = document.getElementById("canvas");
-var context = canvas.getContext("2d");
-var FPS = 60;
-var oldTime = Date.now();
-var newTime;
+function Update(dTime){
+	for (var eachArray in ObjectPool.pool){
+		for (var i in ObjectPool.pool[eachArray]){
+			ObjectPool.pool[eachArray][i].update(dTime);
+		}
+	}
+}
 
-
-
-// Sprite.prototype.render = function() {
-// 	sprite.context.drawImage(this.sprite.image, 0, 0, this.sprite.width, this.sprite.height, 0, 0, this.sprite.width, this.sprite.height);
-// };
-
-// function ObjectArray(){
-//  	var instance;
-
-// 	ObjectArray = function ObjectArray(){
-// 		return instance;
-// 	};
-
-// 	ObjectArray.prototype = this;
-// 	//프로토타입을 변경하면 어떻게 되는가?
-
-// 	instance = new ObjectArray();
-
-// 	instance.constructor = ObjectArray;
-// 	//constructor - 생성자 포인터 - 가 의미하는 바가 정확히 뭐지 
-
-// 	var arr = []; 
-// 	//instance.arr로 하면 사용불가 
-// 	instance.add = function(obj){
-// 		arr.push(obj);
-// 	};
-// 	instance.get = function(num){
-// 		return arr[num];
-// 	};
-// 	instance.length = function(){
-// 		return arr.length;
-// 	};
-
-// 	return instance;
-// }
-
-/**
- * 게임에 사용할 스프라이트는 모두 여기 보관함. 초기 사용시에 init을 따로 돌릴 것이다. 
- * 초기화한 결과, 스프라이트 풀에는 id값과 이미지 로드된 엘리먼트들이 들어간 오브젝트가 포함된다. 스프라이트를 실제 사용할 때 id값으로 불러다 사용하면 됨.
- * 풀에 모든 스프라이트 리소스가 로드되었는지 확인 후 게임이 시작되도록 만들어야 함.
- // */
- // function SpritePool(){
- // 	var instance; 
- // 	SpritePool = function SpritePool(){
- // 		return instance;
- // 	};
- // 	SpritePool.prototype = this;
-
- // 	instance = new SpritePool();
- // 	instance.constructor = SpritePool;
-
- // 	var pool = {};
- // 	var loadCompleted = 0;
- // 	instance.add = function(id, imgSrc){
- // 		pool[id] = function(){
- // 			var img = new Image();
- // 			img.src = imgSrc;
- // 			img.onload = function(){
- // 				loadCompleted++;
- // 			};
- // 			return img;
- // 		}();
- // 	};
- // 	instance.getSprite = function(id){
- // 		return pool[id];
- // 	};
- // 	instance.isLoadCompleted = function(){
- // 		var poolSize = Object.keys(pool).length;
- // 		if (poolSize === loadCompleted) {
- // 			return true;
- // 		} else{
- // 			return false;
- // 		}
- // 	};
- // 	instance.getPool = function(){
- // 		return pool;
- // 	};
-
- // 	return instance;
- // }
-
- function Update(dTime){
- 	// var instance;
-
- 	// Update = function Update(){
- 	// 	return instance;
- 	// };
- 	// Update.prototype = this;
-
- 	// instance = new Update();
- 	// instance.constructor = Update;
-
- 	for (var i = 0; i < ObjectArray.length(); i++) {
- 		// console.log(dTime);
- 		// console.log(ObjectArray.get(i));
- 		ObjectArray.get(i).update(dTime);
- 	}
- }
-
- function Render(){
- 	// var instance;
-
- 	// Render = function Render(){
- 	// 	return instance;
- 	// };
- 	// Render.prototype = this;
-
- 	// instance = new Render();
- 	// instance.constructor = Render;
-
- 	context.clearRect(0, 0, canvas.width, canvas.height);
- 	for (var i = 0; i < ObjectArray.length(); i++) {
- 		ObjectArray.get(i).render();
- 	}
+function Render(){
+ 	Utility.CanvasContext.clearRect(0, 0, Utility.ScreenWidth, Utility.ScreenHeight);
+ 	for (var eachArray in ObjectPool.pool){
+		for (var i in ObjectPool.pool[eachArray]){
+			ObjectPool.pool[eachArray][i].render();
+		}
+	}
+	window.requestAnimationFrame(Render);
  }
 
  function gameLoop(){
- 	newTime = Date.now();
- 	var dTime = (newTime - oldTime)*0.001;
- 	oldTime = newTime;
- 	Update(dTime);
- 	console.log(dTime);
+ 	Update(Utility.getDeltaTime());
  	Render();
  }
 
 var Background = new GameObject({
 	"type" : "object",
  	"id" : "Background",
- 	"width" : 800,
- 	"height" : 600,
+ 	"width" : Utility.ScreenWidth,
+ 	"height" : Utility.ScreenHeight,
  	"posX" : 0,
  	"posY" : 0,
  	"vecX" : 0,
@@ -145,7 +37,9 @@ var Background = new GameObject({
  		// console.log("deefasef");
  	},
  	"render" : function(){
- 		context.drawImage(SpritePool.get(this.id), 0, 0, this.width, this.height, this.posX, this.posY, this.width, this.height);
+ 		// console.log(SpritePool.get(this.id));
+ 		//  console.log("posX : " + this.posX + " posY : " + this.posY);
+ 		Utility.CanvasContext.drawImage(SpritePool.get(this.id), 0, 0, this.width, this.height, this.posX, this.posY, this.width, this.height);
  	}
 });
 
@@ -154,8 +48,8 @@ var Background = new GameObject({
  	"id" : "pc",
  	"width" : 31,
  	"height" : 74,
- 	"posX" : 400,
- 	"posY" : 450,
+ 	"posX" : 200,
+ 	"posY" : 200,
  	"vecX" : 0,
  	"vecY" : 0,
  	"accelX" : 0,
@@ -168,10 +62,10 @@ var Background = new GameObject({
  		// console.log(keyState);
  		if (keyState.left === true && keyState.right === false) {
  			console.log("left pressed");
- 			this.vecX = -120;
+ 			this.vecX = -180;
  		}
  		else if (keyState.right === true && keyState.left === false) {
- 			this.vecX = 120;
+ 			this.vecX = 180;
  		}
  		else{
  			this.vecX = 0;
@@ -182,31 +76,26 @@ var Background = new GameObject({
  		// 	//점프 관련은 나중에 추가하는 걸로
  		// }
  		//가속도가 어떻게 적용되는지 다시 알아볼것 
- 		if (this.posX <= canvas.width - this.width && this.posX >= 0) {
+ 		if (this.posX <= Utility.ScreenWidth - this.width && this.posX >= 0) {
  			this.posX = this.posX + ((this.vecX + (this.vecX * this.accelX)) * dTime);
  		}
  	},
  	"render" : function(){
- 		// console.log(SpritePool.get(this.id));
- 		console.log("posX : " + this.posX + " posY : " + this.posY);
- 		context.drawImage(SpritePool.get(this.id), 0, 0, this.width, this.height, this.posX, this.posY, this.width, this.height);
+ 		 // console.log(SpritePool.get(this.id));
+ 		 // console.log("posX : " + this.posX + " posY : " + this.posY);
+ 		Utility.CanvasContext.drawImage(SpritePool.get(this.id), 0, 0, this.width, this.height, this.posX, this.posY, this.width, this.height);
  	}
  });
 
-
- function initSpritePool(){
- 	// console.log(pc);
- 	// SpritePool().add("pc", "image/STAND_R_00.png");
- 	// console.log(Background);
- 	// SpritePool().add("Background", "image/BGimage.png");
- 	// SpritePool.add(Background);
- 	// SpritePool.add(pc);
- 	SpritePool.init();
+ function initObjectPool(){
+ 	ObjectPool.add(Background);
+ 	ObjectPool.add(pc);
  }
 
- function initObjectArray(){
- 	ObjectArray.add(Background);
- 	ObjectArray.add(pc);
+ function initGameEnvironment(){
+ 	Utility.initScreen(3/4);
+ 	initObjectPool();
+	SpritePool.init();
  }
 
  window.addEventListener("load", function(){
@@ -219,20 +108,21 @@ var Background = new GameObject({
  	 */
 
 	// debugger;
-	initObjectArray();
-	initSpritePool();
-	context.font = "50px serif";
-	context.fillText("Loading.....", 280, 300);
+	initGameEnvironment();
+	Utility.CanvasContext.font = Utility.ScreenWidth * 0.1 + "px serif";
+	Utility.CanvasContext.fillText("Loading.....", Utility.ScreenWidth * 0.3, Utility.ScreenHeight * 0.45);
 	var t = setInterval(function(){
 		console.log("image loading....");
 		if (SpritePool.isLoadCompleted()){
 			clearInterval(t);
 			console.log("complete.");
-			context.drawImage(SpritePool.get(Background.getId()), 0, 0);
+			// Utility.CanvasContext.drawImage(SpritePool.get(Background.id), 0, 0);
 			// Render();
 			setInterval(function(){
-				gameLoop();
-			}, 1000/FPS);
+				// gameLoop();
+				Update(Utility.getDeltaTime());
+			}, Utility.FPS);
+			Render();
 		}
 	}, 10);
 }, false);

@@ -76,7 +76,7 @@ var ControlManager = {
 	 */
 	toggleKeyDown : function(keyCode){
 		//브라우저마다 키 코드가 다를 수 있으므로 여기서 맵핑한다.
-		// console.log(e.which);
+		// //console.log(e.which);
 		// e.preventDefault();
 		var str = "keydown : ";
 		switch(keyCode){
@@ -84,34 +84,34 @@ var ControlManager = {
             // case 12616:
             case 38:
             	this.KeyMap.up = true;
-	            console.log(str + "up");
+	            //console.log(str + "up");
             	break;
             // case 97: //a
             // case 12609:
             case 37:
             	this.KeyMap.left = true;
-	            console.log(str + "left");
+	            //console.log(str + "left");
             	break;
             // case 115: //s
             // case 12596:
             case 40:
             	this.KeyMap.down = true;
-				console.log(str + "down");
+				//console.log(str + "down");
             	break;
             // case 100: //d
             // case 12615:
             case 39:
             	this.KeyMap.right = true;
-				console.log(str + "right");
+				//console.log(str + "right");
             	break;
             case 32 :
             	this.KeyMap.spacebar = true;
-            	console.log(str + "spacebar");
+            	//console.log(str + "spacebar");
             	break;
             default:
-				console.log(str + keyCode);
+				//console.log(str + keyCode);
         }
-        // console.log(this.KeyMap);
+        // //console.log(this.KeyMap);
     },
     /**
      * 키를 눌렀다 뗐을 때 키 코드 값을 받아서 KeyMap의 요소 값들을 false로 바꾼다. keyup event시에 발동하도록 EventListener를 등록해야 함.
@@ -123,26 +123,26 @@ var ControlManager = {
     	switch(keyCode){
     		case 38:
             	this.KeyMap.up = false;
-	            console.log(str + "up");
+	            //console.log(str + "up");
             	break;
             case 37:
             	this.KeyMap.left = false;
-	            console.log(str + "left");
+	            //console.log(str + "left");
             	break;
             case 40:
             	this.KeyMap.down = false;
-				console.log(str + "down");
+				//console.log(str + "down");
             	break;
             case 39:
             	this.KeyMap.right = false;
-				console.log(str + "right");
+				//console.log(str + "right");
             	break;
             case 32 :
             	this.KeyMap.spacebar = false;
-            	console.log(str + "spacebar");
+            	//console.log(str + "spacebar");
             	break;
             default:
-				console.log(str + keyCode);
+				//console.log(str + keyCode);
     	}
     },
     /**
@@ -156,7 +156,7 @@ var ControlManager = {
     		if (this.KeyMap[i] === true) {
     			state.push(i);
     		}
-    		// console.log( i + " : " + this.KeyMap[i]);
+    		// //console.log( i + " : " + this.KeyMap[i]);
     	}
     	return state;
     },

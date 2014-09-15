@@ -1,5 +1,16 @@
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
-#map, #title{
+
+#GameScreen{
+    border-color: black;
+    border: 1px;
+    border-style: solid;
+    position: absolute;
+    left: 10%;
+    right:10%;
+}
+
+
+/*#map, #title{
     position: relative;
     z-index: 0;
     width: 800px;
@@ -125,4 +136,4 @@
         background-position: -3px 0;
 	}
 
-}
+}*/
