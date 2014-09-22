@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - javascript/ControlManager.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>javascript/ControlManager.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">65.79</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">101</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">18.97</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">0.41</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">var ControlManager = {
+	init : function(){
+		var e = event ? event : window.event;
+		document.body.addEventListener(&quot;keydown&quot;, function(e){
+			var keyCode = (e.which)? e.which : e.keyCode;
+			ControlManager.toggleKeyDown(keyCode);
+		}, false);
+		document.body.addEventListener(&quot;keyup&quot;, function(e){
+			var keyCode = (e.which)? e.which : e.keyCode;
+			ControlManager.toggleKeyUp(keyCode);
+		}, false);
+	},
+	/**
+	 * 현재 키 입력 상태를 확인하기 위한 오브젝트. 지금은 방향키와 스페이스바만 받음. 다른 키 처리가 필요하면 적당히 등록해서 쓴다. 
+	 * @type {Object}
+	 * 이 오브젝트에 대한 접근 권한이 활짝 열려 있는 게 마음에 안 드는데 어떻게 해야 적절하게 private처럼 쓸 수 있을까...
+	 */
+	KeyMap : {
+		&quot;up&quot; : false,
+		&quot;down&quot; : false,
+		&quot;left&quot; : false,
+		&quot;right&quot; : false,
+		&quot;spacebar&quot; : false
+	},
+	/**
+	 * 키가 눌렸을 때 키 코드 값을 받아서 KeyMap의 요소 값들을 True로 바꾼다. keydown event시에 발동하도록 EventListener를 등록해야 함.
+	 * @param  {[type]} keyCode [description]
+	 * @return {[type]}         [description]
+	 */
+	toggleKeyDown : function(keyCode){
+		//브라우저마다 키 코드가 다를 수 있으므로 여기서 맵핑한다.
+		// //console.log(e.which);
+		// e.preventDefault();
+		var str = &quot;keydown : &quot;;
+		switch(keyCode){
+            // case 119: //w
+            // case 12616:
+            case 38:
+            	this.KeyMap.up = true;
+	            //console.log(str + &quot;up&quot;);
+            	break;
+            // case 97: //a
+            // case 12609:
+            case 37:
+            	this.KeyMap.left = true;
+	            //console.log(str + &quot;left&quot;);
+            	break;
+            // case 115: //s
+            // case 12596:
+            case 40:
+            	this.KeyMap.down = true;
+				//console.log(str + &quot;down&quot;);
+            	break;
+            // case 100: //d
+            // case 12615:
+            case 39:
+            	this.KeyMap.right = true;
+				//console.log(str + &quot;right&quot;);
+            	break;
+            case 32 :
+            	this.KeyMap.spacebar = true;
+            	//console.log(str + &quot;spacebar&quot;);
+            	break;
+            default:
+				//console.log(str + keyCode);
+        }
+        // //console.log(this.KeyMap);
+    },
+    /**
+     * 키를 눌렀다 뗐을 때 키 코드 값을 받아서 KeyMap의 요소 값들을 false로 바꾼다. keyup event시에 발동하도록 EventListener를 등록해야 함.
+     * @param  {[type]} keyCode [description : event 객체로부터 keyCode를 뽑아서 넣어야함]
+     * @return {[type]}         [description]
+     */
+    toggleKeyUp : function(keyCode){
+    	var str = &quot;keyup : &quot;;
+    	switch(keyCode){
+    		case 38:
+            	this.KeyMap.up = false;
+	            //console.log(str + &quot;up&quot;);
+            	break;
+            case 37:
+            	this.KeyMap.left = false;
+	            //console.log(str + &quot;left&quot;);
+            	break;
+            case 40:
+            	this.KeyMap.down = false;
+				//console.log(str + &quot;down&quot;);
+            	break;
+            case 39:
+            	this.KeyMap.right = false;
+				//console.log(str + &quot;right&quot;);
+            	break;
+            case 32 :
+            	this.KeyMap.spacebar = false;
+            	//console.log(str + &quot;spacebar&quot;);
+            	break;
+            default:
+				//console.log(str + keyCode);
+    	}
+    },
+};
+
+// //미친 시발 방향키는 keypress가 안 되고 keydown만 뜬다 으아아아ㅏ 아ㅏㅏ
+// document.body.addEventListener(&quot;keydown&quot;, function(e){
+// 	var keyCode = (e.which)? e.which : e.keyCode;
+// 	ControlManager.toggleKeyDown(keyCode);
+// }, false);</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

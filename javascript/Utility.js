@@ -2,18 +2,23 @@ var Utility = {
 	ScreenWidth : -1,
 	ScreenHeight : -1,
 	CanvasContext : undefined,
-	FPS : 1000/30,
+	FPS : 1000/60,
 
 	initScreen : function(screenRatio){
 		if (screenRatio === undefined) {
 			screenRatio = 9/16;
 		}
-		var width = window.innerWidth * 0.8;
-		var height = width * screenRatio;
+		var height = window.innerHeight * 0.95;
+		var width = height/screenRatio;
+		if (width > window.innerWidth) {
+			width = window.innerWidth * 0.9;
+			height = width * screenRatio;
+		}
 		var canvas = document.createElement("canvas");
 		canvas.setAttribute("id", "GameScreen");
 		canvas.setAttribute("width", width);
 		canvas.setAttribute("height", height);
+		canvas.style.left = ((window.innerWidth - width) / 2) + "px";
 		document.body.appendChild(canvas);
 		this.ScreenWidth = width;
 		this.ScreenHeight = height;
@@ -48,8 +53,8 @@ var Utility = {
 	},
 
 	checkCollision : function(objA, objB){
-		var aPos = getObjectPosition(objA);
-		var bPos = getObjectPosition(objB);
+		var aPos = this.getObjectPosition(objA);
+		var bPos = this.getObjectPosition(objB);
 
 		if( (aPos.top < bPos.bottom) && 
 			(aPos.bottom > bPos.top) && 

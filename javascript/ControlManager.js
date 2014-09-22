@@ -1,50 +1,3 @@
-// function ControlManager(){
-// 	var KeyMap = {
-// 		"up" : false,
-// 		"down" : false,
-// 		"left" : false,
-// 		"right" : false,
-// 		"spacebar" : false
-// 	};
-// 	var instance; 
-// 	ControlManager = function(){
-// 		return instance;
-// 	};
-// 	ControlManager.prototype = this;
-// 	instance = new ControlManager();
-// 	return instance;
-// }
-
-// ControlManager.prototype.init = function() {
-// 	var e = event ? event : window.event;
-// 	document.body.addEventListener("keydown", function(e){
-// 		var keyCode = (e.which)? e.which : e.keyCode;
-// 		ControlManager.toggleKeyDown(keyCode);
-// 	}, false);
-// 	document.body.addEventListener("keyup", function(e){
-// 		var keyCode = (e.which)? e.which : e.keyCode;
-// 		ControlManager.toggleKeyUp(keyCode);
-// 	}, false);
-// };
-
-// ControlManager.prototype.setUpTrue = function() {
-// 	this.KeyMap.up = true;
-// };
-
-// ControlManager.prototype.init = function() {
-// 	this.KeyMap = {
-// 		"up" : false,
-// 		"down" : false,
-// 		"left" : false,
-// 		"right" : false,
-// 		"spacebar" : false
-// 	};
-// };
-
-// ControlManager.prototype.getKeyMap = function() {
-// 	return this.KeyMap;
-// };
-
 var ControlManager = {
 	init : function(){
 		var e = event ? event : window.event;
@@ -145,28 +98,7 @@ var ControlManager = {
 				//console.log(str + keyCode);
     	}
     },
-    /**
-     * 현재 KeyMap을 확인해서 값이 True인 것들만 합쳐서 반환함. (합친 값을 사용하므로 왼쪽 + 위 / 오른쪽 + 스페이스바 같은 동시입력 처리 가능)
-     * @return {[type]} [description]
-     */
-    //이거 필요 없네.... 그냥 KeyMap을 바로 쓰면 되네..... 이거 만든다고 뻘짓 실컷 했는데 망함............
-    getCurrentKeyState : function(){
-    	var state = [];
-    	for (var i in this.KeyMap){
-    		if (this.KeyMap[i] === true) {
-    			state.push(i);
-    		}
-    		// //console.log( i + " : " + this.KeyMap[i]);
-    	}
-    	return state;
-    },
-    getKeyMap : function(){
-    	return this.KeyMap;
-    }
 };
-
-ControlManager.init();
-
 
 // //미친 시발 방향키는 keypress가 안 되고 keydown만 뜬다 으아아아ㅏ 아ㅏㅏ
 // document.body.addEventListener("keydown", function(e){
