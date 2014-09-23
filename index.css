@@ -1,0 +1,14 @@
+#menu{
+	position: fixed;
+	background-color: #4444ff;
+	height: 15%;
+}
+
+ul li{
+	position: absolute;
+	height: 85%;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+	
+}
