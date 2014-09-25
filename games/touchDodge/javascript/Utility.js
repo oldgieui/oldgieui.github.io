@@ -26,6 +26,7 @@ var Utility = {
 		canvas.style.padding = "0px";
 		document.body.style.overflow = "hidden";
 		document.body.style.padding = "0px";
+		document.body.style.margin = "0px";
 		document.body.appendChild(canvas);
 		this.ScreenWidth = width;
 		this.ScreenHeight = height;
