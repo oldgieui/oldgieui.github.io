@@ -60,10 +60,10 @@ var ControlManager = {
                 this.TouchMap.right = false;
                 this.TouchMap.left = false;   
             }
-            if (dirY < -1) {
+            if (dirY < -2) {
                 this.TouchMap.up = true;
                 this.TouchMap.down = false;
-            } else if(dirY > 1){
+            } else if(dirY > 2){
                 this.TouchMap.up = false;
                 this.TouchMap.down = true;
             } else{

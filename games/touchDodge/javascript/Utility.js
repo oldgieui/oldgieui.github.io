@@ -9,12 +9,21 @@ var Utility = {
 		if (screenRatio === undefined) {
 			screenRatio = 9/16;
 		}
-		var height = window.innerHeight;
-		var width = window.innerWidth;
-		if (width > window.innerWidth) {
-			width = window.innerWidth * 0.9;
-			height = width * screenRatio;
-		}
+		var width;
+		var height;
+		width = window.innerWidth;
+		height = window.innerHeight;
+		// if (this.isTouchDevice() === true) {
+		// 	width = window.innerHeight && window.innerWidth;
+		// 	height = window.innerHeight && window.innerWidth;
+		// } else{
+		// 	width = window.innerWidth;
+		// 	height = window.innerHeight;
+		// }
+		// if (width > window.innerWidth) {
+		// 	width = window.innerWidth * 0.9;
+		// 	height = width * screenRatio;
+		// }
 		var canvas = document.createElement("canvas");
 		canvas.setAttribute("id", "GameScreen");
 		canvas.setAttribute("width", width);
@@ -24,6 +33,7 @@ var Utility = {
 		canvas.style.border="1px solid black";
 		canvas.style.margin = "0px";
 		canvas.style.padding = "0px";
+		canvas.style.top = "0px";
 		document.body.style.overflow = "hidden";
 		document.body.style.padding = "0px";
 		document.body.style.margin = "0px";

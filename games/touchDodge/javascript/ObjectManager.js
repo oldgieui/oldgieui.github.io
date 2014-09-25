@@ -75,6 +75,14 @@ var ObjectManager = {
 				if (Utility.checkCollision(this, ObjectManager.ObjectPool.pool.character[0])) {
 					Utility.GameOver = true;
 				}
+				for (var i = 0; i < ObjectManager.ObjectPool.pool.enemy.length; i++) {
+					if (this !== ObjectManager.ObjectPool.pool.enemy[i] && Utility.checkCollision(this, ObjectManager.ObjectPool.pool.enemy[i])) {
+						this.vecX = this.vecX * -1;
+						this.accelX = this.accelX * (-1);
+						this.vecY = this.vecY * -1;
+						this.accelY = this.accelY * (-1);
+					}
+				}
 			},
 			"render" : function(){
 				Utility.CanvasContext.drawImage(ResourceManager.SpritePool.get(this.id), this.posX, this.posY, this.width, this.height);
@@ -109,25 +117,28 @@ var ObjectManager = {
 			"SpriteSrc" : "image/spaceship.png",
 			"update" : function(dTime){
 				var keyState;
+				var vel;
 				if (Utility.isTouchDevice() === true) {
 					keyState = ControlManager.DirectTouch.TouchMap;
+					vel = 300;
 				} else{
 					keyState = ControlManager.KeyMap;
+					vel = 200;
 				}
 				if (keyState.left === true && keyState.right === false) {
-					this.vecX = -200;
+					this.vecX = -vel;
 				}
 				else if (keyState.right === true && keyState.left === false) {
-					this.vecX = 200;
+					this.vecX = vel;
 				}
 				else{
 					this.vecX = 0;
 				}
 				if (keyState.up === true && keyState.down === false) {
-					this.vecY = -200;
+					this.vecY = -vel;
 				}
 				else if (keyState.down === true && keyState.up === false) {
-					this.vecY = 200;
+					this.vecY = vel;
 				}
 				else{
 					this.vecY = 0;
@@ -147,9 +158,5 @@ var ObjectManager = {
 			}
 		});
 		this.addBall();
-		// this.createBall(Utility.ScreenWidth * 0.75, Utility.ScreenHeight * 0.35, 3, 3, 0, 0);
-		// this.createBall(Utility.ScreenWidth * 0.25, Utility.ScreenHeight * 0.45, 3, 3, 0, 0);
-		// this.createBall(Utility.ScreenWidth * 0.5, Utility.ScreenHeight * 0.1, 3, 3, 0, 0);
-		// this.createBall(Utility.ScreenWidth * 0.9, Utility.ScreenHeight * 0.6, 3, 3, 0, 0);
 	},
 };
