@@ -1,6 +1,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="index.css">
 	<title>
 		슈퍼학고맨 코딩 실습실
@@ -10,9 +11,9 @@
 	<div id="menu">
 		두둥 
 	</div>
-	<ul>
+	<ul id = "container">
 		<li id="main" class="contents">
-			<p>공사중 ^오^</p>
+			공사중 ^오^
 		</li>
 		<li id="study" class="contents">
 			study
@@ -24,14 +25,6 @@
 			multimedia
 		</li>
 	</ul>
-	<script type="text/javascript">
-		window.addEventListener("load", function(){
-			var contents = document.querySelectorAll("ul li.contents");
-			for (var i = 0; i < contents.length; i++) {
-				contents[i].style.height = window.innerHeight - 50 + "px";
-			}
-		}, false);
-		document.body.addEventListener("", function(){}, false);
-	</script>
+	<script type="text/javascript" src="index.js"></script>
 </body>
 </html>
