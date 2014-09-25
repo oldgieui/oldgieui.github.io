@@ -85,12 +85,12 @@ var ObjectManager = {
 	addBall : function(){
 		var posX = Math.floor(Math.random() * Utility.ScreenWidth);
 		var posY = Math.floor(Math.random() * Utility.ScreenHeight);
-		var vecX = Math.floor(Math.random() * 4 + 2);
-		var vecY = Math.floor(Math.random() * 4 + 2);
-		var accelX = Math.floor(Math.random() * 2) * 0.001;
-		var accelY = Math.floor(Math.random() * 2) * 0.001;
+		var vecX = Math.floor(Math.random() * 4 + 2) * Utility.getRandom1();
+		var vecY = Math.floor(Math.random() * 4 + 2) * Utility.getRandom1();
+		var accelX = Math.floor(Math.random() * 2) * 0.001 * Utility.getRandom1();
+		var accelY = Math.floor(Math.random() * 2) * 0.001 * Utility.getRandom1();
 		ObjectManager.createBall(posX, posY, vecX, vecY, accelX, accelY);
- 		window.setTimeout(ObjectManager.addBall, 5000);
+ 		window.setTimeout(ObjectManager.addBall, 3000);
 	},
 
 	//추후에 JSON 파일을 읽어와서 GameObject들을 동적으로 생성하는 기능을 넣자 

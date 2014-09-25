@@ -88,4 +88,12 @@ var Utility = {
 			(navigator.MaxTouchPoints > 0) || 
 			(navigator.msMaxTouchPoints > 0));
 	},
+
+	getRandom1 : function(){
+		var rr = Math.random();
+		if(rr >= 0.5){
+			return -1;
+		} else
+		return 1;
+	}
 };
