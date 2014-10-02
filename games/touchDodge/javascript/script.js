@@ -1,23 +1,30 @@
+updateTime = 0;
 function Update(dTime){
 	if (Utility.GameOver === true) {
 		return;
 	}
-	for (var eachArray in ObjectManager.ObjectPool.pool){
-		for (var i in ObjectManager.ObjectPool.pool[eachArray]){
-			ObjectManager.ObjectPool.pool[eachArray][i].update(dTime);
+	else{
+		updateTime++;
+		for (var eachArray in ObjectManager.ObjectPool.pool){
+			for (var i in ObjectManager.ObjectPool.pool[eachArray]){
+				ObjectManager.ObjectPool.pool[eachArray][i].update(dTime);
+			}
 		}
 	}
 }
-
+renderTime = 0;
 function Render(){
 	if (Utility.GameOver === true) {
 		Utility.CanvasContext.fillText("Game Over", Utility.ScreenWidth * 0.25, Utility.ScreenHeight * 0.45);	
 		return;
 	}
- 	Utility.CanvasContext.clearRect(0, 0, Utility.ScreenWidth, Utility.ScreenHeight);
- 	for (var eachArray in ObjectManager.ObjectPool.pool){
-		for (var i in ObjectManager.ObjectPool.pool[eachArray]){
-			ObjectManager.ObjectPool.pool[eachArray][i].render();
+	else {
+		renderTime++;
+		Utility.CanvasContext.clearRect(0, 0, Utility.ScreenWidth, Utility.ScreenHeight);
+		for (var eachArray in ObjectManager.ObjectPool.pool){
+			for (var i in ObjectManager.ObjectPool.pool[eachArray]){
+				ObjectManager.ObjectPool.pool[eachArray][i].render();
+			}
 		}
 	}
  }
