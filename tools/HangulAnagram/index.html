@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="Style.css">
+    <meta charset="UTF-8">
+    <title>ANAGRAM!</title>
+</head>
+<body>
+<header>
+    한글 애너그램 만들기<p>
+    한글만 됩니다.<br>
+    초성체는 안 됩니다.<br>
+</header>
+<div id="content">
+    <form action="javascript:run()" id="formArea">
+        <input type="text" name="text" alt="뒤섞을 단어 입력" value="입력하라우"/>
+        <input type="submit" value="섞기"/>
+    </form>
+    <div id="result">
+        <ul>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src="HPIF.js"></script>
+<script type="text/javascript">
+    function run() {
+        document.getElementById("result").style.visibility = "visible";
+        var input = document.querySelector("input").value;
+        var list = document.querySelectorAll("li");
+        list[0].innerText = "\"" + input + "\"을 뒤섞은 결과...";
+        list[1].innerText = HPIF.anagram(input);
+    }
+</script>
+</body>
+</html>
