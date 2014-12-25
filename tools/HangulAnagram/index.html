@@ -6,14 +6,16 @@
     <title>ANAGRAM!</title>
 </head>
 <body>
-<header>
-    한글 애너그램 만들기<p>
-    한글만 됩니다.<br>
-    초성체는 안 됩니다.<br>
-</header>
+<div id="header">
+    한글 애너그램 만들기<br>
+    <p>
+        한글만 됩니다.<br>
+        초성체는 안 됩니다.<br>
+    </p>
+</div>
 <div id="content">
     <form action="javascript:run()" id="formArea">
-        <input type="text" name="text" alt="뒤섞을 단어 입력" value="입력하라우"/>
+        <input type="text" name="text" alt="뒤섞을 단어 입력" value="입력하라우" onfocus="clearValue(this)"/>
         <input type="submit" value="섞기"/>
     </form>
     <div id="result">
@@ -31,6 +33,9 @@
         var list = document.querySelectorAll("li");
         list[0].innerText = "\"" + input + "\"을 뒤섞은 결과...";
         list[1].innerText = HPIF.anagram(input);
+    }
+    function clearValue(ele) {
+        ele.setAttribute("value", "");
     }
 </script>
 </body>
