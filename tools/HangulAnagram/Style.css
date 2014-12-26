@@ -1,5 +1,19 @@
-#header{
-    position: absolute;
+.app{
+    position: relative;
+    margin-bottom: 30px;
+    /*height: 350px;*/
+    border: dashed thin #707070;
+}
+
+.app:nth-child(1){
+    height: 350px;
+}
+.app:nth-child(2){
+    height: 550px;
+}
+
+.header{
+    position: relative;
     margin-top: 50px;
     text-align: center;
     width: 600px;
@@ -8,9 +22,8 @@
     padding: 0px 20px 0px 20px;
 }
 
-#content{
-    position: absolute;
-    top: 20%;
+.content{
+    position: relative;
     width: 600px;
     float: left;
     margin-left: 50%;
@@ -43,9 +56,10 @@ input[type="submit"]{
     float: right;
 }
 
-#result{
+.result{
     margin-top: 20px;
     visibility: hidden;
+    margin-bottom: 20px;
 }
 
 ul{

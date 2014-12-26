@@ -12,8 +12,9 @@ var HPIF = function () {
     function toJaso(text) {
         try {
             if (typeof text === "string") {
+                text = text.replace(/[^가-힣]/g, '');
                 var cho, jung, jong;
-                var result = "";
+                var result = [];
                 for (var i = 0; i < text.length; i++) {
                     var ch = text.charCodeAt(i);
                     if (ch >= 0xAC00 && ch <= 0xD7A3) {
@@ -23,9 +24,9 @@ var HPIF = function () {
                         jung = jong / 28;
                         jong = jong % 28;
 
-                        result = result + String.fromCharCode(ChoSeong[parseInt(cho)]) + String.fromCharCode(JungSeong[parseInt(jung)]);
+                        result.push(String.fromCharCode(ChoSeong[parseInt(cho)]), String.fromCharCode(JungSeong[parseInt(jung)]));
                         if (jong !== 0) {
-                            result += String.fromCharCode(JongSeong[parseInt(jong)]);
+                            result.push(String.fromCharCode(JongSeong[parseInt(jong)]));
                         }
                     }
                 }
@@ -108,8 +109,17 @@ var HPIF = function () {
         }
     }
 
+    function isJungSeong(char) {
+        if (char.charCodeAt(0) >= 0x314f && char.charCodeAt(0) <= 0x3163) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     return {
         toJaso: toJaso,
-        anagram: anagram
+        anagram: anagram,
+        isJungSeong: isJungSeong
     };
 }();

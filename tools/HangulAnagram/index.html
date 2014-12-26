@@ -23,37 +23,116 @@
     </script>
 </head>
 <body>
-<div id="header">
-    한글 애너그램 만들기<br>
+<div class="app">
+    <div class="header">
+        한글 애너그램 만들기<br>
 
-    <p>
-        한글만 됩니다.<br>
-        초성체는 안 됩니다.<br>
-    </p>
-</div>
-<div id="content">
-    <form action="javascript:run()" id="formArea">
-        <input type="text" name="text" alt="뒤섞을 단어 입력" value="입력하라우" onfocus="clearValue(this)"/>
-        <input type="submit" value="섞기"/>
-    </form>
-    <div id="result">
-        <ul>
-            <li></li>
-            <li></li>
-        </ul>
+        <p>
+            한글만 됩니다.<br>
+            초성체는 안 됩니다.<br>
+        </p>
+    </div>
+    <div class="content">
+        <form action="javascript:makeAnagram()">
+            <input type="text" name="anagramText" alt="뒤섞을 단어 입력" value="입력하라우" onfocus="clearValue(this)"/>
+            <input type="submit" value="섞기"/>
+        </form>
+        <div class="result">
+            <ul>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
     </div>
 </div>
+
+<div class="app">
+    <div class="header">
+        같은 자소로 되어 있는지 비교하기<br>
+
+        <p>
+            두 입력 칸에 입력된 단어가 같은 자소로 되어있는지 알려 줍니다.<br>
+            한글만 됩니다.<br>
+            초성체는 안 됩니다.<br>
+        </p>
+    </div>
+    <div class="content">
+        <form action="javascript:compareWords()">
+            <input type="text" name="word1" alt="비교할 단어 1" placeholder="여기에 입력한 단어를 뒤섞어서" onfocus="clearValue(this)"/>
+            <input type="text" name="word2" alt="비교할 단어 2" placeholder="여기에 입력한 단어로 만들 수 있을 것인가..."
+                   onfocus="clearValue(this)"/>
+            <input type="submit" value="ㄱㄱㄱㄱ ㄱㄱㄱ">
+        </form>
+        <div class="result">
+            <ul>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="HPIF.js"></script>
 <script type="text/javascript">
-    function run() {
-        document.getElementById("result").style.visibility = "visible";
-        var input = document.querySelector("input").value;
-        var list = document.querySelectorAll("li");
-        list[0].innerText = "\"" + input + "\"을 뒤섞은 결과...";
+    function makeAnagram() {
+        document.querySelector(".app:nth-child(1) .result").style.visibility = "visible";
+        var input = document.querySelector("input[name=\"anagramText\"]").value;
+        var list = document.querySelectorAll(".app:nth-child(1) li");
+        var lastChar = HPIF.toJaso(input);
+        lastChar = lastChar[lastChar.length - 1];
+        var josa;
+        if (HPIF.isJungSeong(lastChar)) {
+            josa = "를";
+        } else {
+            josa = "을";
+        }
+        list[0].innerText = "\"" + input + "\"" + josa + " 뒤섞은 결과...";
         list[1].innerText = HPIF.anagram(input);
     }
+
+    function compareWords() {
+        var word1 = document.querySelector("input[name=\"word1\"]").value;
+        var word2 = document.querySelector("input[name=\"word2\"]").value;
+
+        if (word1 === "" || word2 === "") {
+            alert("입력을... 하세요");
+            return;
+        }
+
+        var jaso1 = HPIF.toJaso(word1).sort().toString();
+        var jaso2 = HPIF.toJaso(word2).sort().toString();
+
+        var josa1, josa2;
+        var lastChar = HPIF.toJaso(word1);
+        lastChar = lastChar[lastChar.length - 1];
+        if (HPIF.isJungSeong(lastChar)) {
+            josa1 = "를";
+        } else {
+            josa1 = "을";
+        }
+
+        var lastChar = HPIF.toJaso(word2);
+        lastChar = lastChar[lastChar.length - 1];
+        if (HPIF.isJungSeong(lastChar)) {
+            josa2 = "를";
+        } else {
+            josa2 = "을";
+        }
+
+        var list = document.querySelectorAll(".app:nth-child(2) li");
+        list[0].innerText = "\"" + word1 + "\"" + josa1 + " 뒤섞으면 \"" + word2 + "\"" + josa2 + "...";
+
+        document.querySelector(".app:nth-child(2) .result").style.visibility = "visible";
+        if (jaso1 === jaso2) {
+            list[1].innerText = " 만 들 수 있 다 ";
+        } else {
+            list[1].innerText = " 못 만 든 다 ";
+        }
+    }
+
     function clearValue(ele) {
         ele.setAttribute("value", "");
+        ele.setAttribute("placeholder", "");
     }
 
 </script>
