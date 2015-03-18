@@ -117,9 +117,61 @@ var HPIF = function () {
         }
     }
 
+    var C$AddJosa = function () {
+        function isLastJasoVowel(str) {
+            try {
+                if (typeof str === "string") {
+                    var lastJaso = toJaso(str.charAt(str.length - 1)).pop();
+                    if (lastJaso.charCodeAt(0) >= 0x314f && lastJaso.charCodeAt(0) <= 0x3163) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    throw new TypeError("문자열 이외에는 처리할 수 없습니다.");
+                }
+            }
+            catch (error) {
+                console.error(error.name + " : " + error.message);
+            }
+        }
+
+        function eulleul(str) {
+            if (isLastJasoVowel(str)) {
+                return str + "를";
+            } else {
+                return str + "을";
+            }
+        }
+
+        function eunneun(str) {
+            if (isLastJasoVowel(str)) {
+                return str + "는";
+            } else {
+                return str + "은";
+            }
+        }
+
+        function iga(str) {
+            if (isLastJasoVowel(str)) {
+                return str + "가";
+            } else {
+                return str + "이";
+            }
+        }
+
+        return {
+            eulleul: eulleul,
+            eunneun: eunneun,
+            iga: iga
+        };
+    }();
+
+
     return {
         toJaso: toJaso,
         anagram: anagram,
-        isJungSeong: isJungSeong
+        isJungSeong: isJungSeong,
+        addJosa: C$AddJosa
     };
 }();

@@ -101,26 +101,28 @@
 
         var jaso1 = HPIF.toJaso(word1).sort().toString();
         var jaso2 = HPIF.toJaso(word2).sort().toString();
-
-        var josa1, josa2;
-        var lastChar = HPIF.toJaso(word1);
-        lastChar = lastChar[lastChar.length - 1];
-        if (HPIF.isJungSeong(lastChar)) {
-            josa1 = "를";
-        } else {
-            josa1 = "을";
-        }
-
-        var lastChar = HPIF.toJaso(word2);
-        lastChar = lastChar[lastChar.length - 1];
-        if (HPIF.isJungSeong(lastChar)) {
-            josa2 = "를";
-        } else {
-            josa2 = "을";
-        }
+//
+//        var josa1, josa2;
+//        var lastChar = HPIF.toJaso(word1);
+//        lastChar = lastChar[lastChar.length - 1];
+//        if (HPIF.isJungSeong(lastChar)) {
+//            josa1 = "를";
+//        } else {
+//            josa1 = "을";
+//        }
+//
+//        var lastChar = HPIF.toJaso(word2);
+//        lastChar = lastChar[lastChar.length - 1];
+//        if (HPIF.isJungSeong(lastChar)) {
+//            josa2 = "를";
+//        } else {
+//            josa2 = "을";
+//        }
 
         var list = document.querySelectorAll(".app:nth-child(2) li");
-        list[0].innerText = "\"" + word1 + "\"" + josa1 + " 뒤섞으면 \"" + word2 + "\"" + josa2 + "...";
+
+//        list[0].innerText = "\"" + word1 + "\"" + josa1 + " 뒤섞으면 \"" + word2 + "\"" + josa2 + "...";
+        list[0].innerText = HPIF.addJosa.eulleul(word1) + " 뒤섞으면 " + HPIF.addJosa.eulleul(word2) + "...";
 
         document.querySelector(".app:nth-child(2) .result").style.visibility = "visible";
         if (jaso1 === jaso2) {

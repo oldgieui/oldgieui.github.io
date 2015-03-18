@@ -116,7 +116,7 @@ var ObjectManager = {
 				"vecY" : 2,
 				"accelX" : 0,
 				"accelY" : 0.1,
-				"SpriteSrc" : "image/ball.jpg",
+				"SpriteSrc" : "image/ball.png",
 				"update" : function(dTime){
 					var xEnd = Utility.ScreenWidth - this.width;
 					var yEnd = Utility.ScreenHeight - this.height * 2;
