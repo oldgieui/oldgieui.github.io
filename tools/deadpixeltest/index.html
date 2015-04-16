@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dead Pixel Test</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="main" class="black"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript">
+    var dpt = function () {
+        var classArr = [
+            "black",
+            "red",
+            "green",
+            "blue",
+            "magenta",
+            "cyan",
+            "yellow",
+            "white"
+        ];
+        var curIdx = 0;
+
+        function classChanger(ele) {
+            ele.removeClass(classArr[curIdx++]);
+            curIdx = curIdx >= classArr.length ? 0 : curIdx;
+            ele.addClass(classArr[curIdx]);
+        }
+
+        return {
+            classChanger: classChanger
+        };
+
+    }();
+    $("#main").click(function () {
+        console.log($(this));
+        dpt.classChanger($(this));
+    });
+</script>
+</body>
+</html>
