@@ -27,7 +27,7 @@
             var urlForm = document.getElementById("urlForm");
             urlForm.addEventListener("submit", function(e){
                 e.preventDefault();
-                var regex = /^http\:\/\//g;
+                var regex = /^http(|s)\:\/\//ig;
                 var url = document.querySelector("#urlForm>input[type='text']").value;
                 if (false == regex.test(url)) {
                     url = "http://" + url.trim();
