@@ -19,16 +19,21 @@
 
 <body>
     <form action="" id="urlForm">
-        <input type="text" placeholder="input url..." oninput="onUrlInput()">
+        <input type="text" placeholder="input url...">
         <input type="submit" value="go">
     </form>
     <script type="text/javascript">
         (function(){
-            var urlTextInput = document.querySelector("#urlForm>input[type='text']");
             var urlForm = document.getElementById("urlForm");
-            onUrlInput = function() {
-                urlForm.action = urlTextInput.value;
-            }
+            urlForm.addEventListener("submit", function(e){
+                e.preventDefault();
+                var regex = /^http\:\/\//g;
+                var url = document.querySelector("#urlForm>input[type='text']").value;
+                if (false == regex.test(url)) {
+                    url = "http://" + url.trim();
+                }
+                document.location.href = url;
+            });
         })();
     </script>
 </body>
